@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- drawerlayoutsize-->
+    <dimen name="drawer_width">260dp</dimen>
+    <dimen name="drawer_header_height">140dp</dimen>
+    <dimen name="drawer_header_icon_size">50dp</dimen>
+    <dimen name="drawer_item_icon_size">14dp</dimen>
+    <dimen name="drawer_item_height">44dp</dimen>
+    <dimen name="drawer_item_icon_leftmargin">14dp</dimen>
+    <dimen name="drawer_item_text_leftmargin">38dp</dimen>
+
+
+    <dimen name="custom_navigation_elevation">16dp</dimen>
+    <dimen name="custom_navigation_icon_padding">32dp</dimen>
+    <dimen name="custom_navigation_icon_size">24dp</dimen>
+    <dimen name="custom_navigation_max_width">280dp</dimen>
+    <dimen name="custom_navigation_padding_bottom">8dp</dimen>
+    <dimen name="custom_navigation_separator_vertical_padding">8dp</dimen>
+
+
+    <!-- 字体大小 -->
+    <dimen name="text_micro">12sp</dimen>
+    <dimen name="text_small">14sp</dimen>
+    <dimen name="text_medium">18sp</dimen>
+    <dimen name="text_large">20sp</dimen>
+
+    <dimen name="songitem_height">70dp</dimen>
+</resources>

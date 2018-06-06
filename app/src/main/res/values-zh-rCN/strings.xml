@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">知音</string>
+
+    <string name="perms_request_rationale_storage">需要访问存储空间权限</string>
+</resources>

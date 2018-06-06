@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">DrawerLayout</string>
+
+    <!-- drawer_menu_text-->
+    <string name="drawer_menu_home">首页</string>
+    <string name="drawer_menu_rank">排行榜</string>
+    <string name="drawer_menu_column">栏目</string>
+    <string name="drawer_menu_search">搜索</string>
+    <string name="drawer_menu_setting">设置</string>
+    <string name="drawer_menu_night">夜间模式</string>
+    <string name="drawer_menu_offline">离线</string>
+
+    <string name="author_name">赵泽锴</string>
+    <string name="author_email">375454031@qq.com</string>
+
+    <string name="nomore">已经到底了</string>
+</resources>

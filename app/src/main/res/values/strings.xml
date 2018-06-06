@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">ZhiYin</string>
+    <string name="author_name">赵泽锴</string>
+    <string name="author_email">375454031@qq.com</string>
+
+    <string name="perms_request_rationale_storage">需要访问存储空间权限</string>
+    <string name="perms_request_appsetting_storage">需要访问存储空间权限, 否则无法正常使用，是否打开设置</string>
+
+    <string name="title_icon">&#xe604;</string>
+    <string name="title_user">我的</string>
+    <string name="title_recommend">排行</string>
+    <string name="title_special">歌单</string>
+    <string name="title_search">&#xe7d4;</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="def_text">乐乐音乐，开心每一天</string>
+    <string name="def_artist">乐乐音乐</string>
+    <string name="def_songName">开心每一天</string>
+
+    <string name="error_play">"播放歌曲出错，1秒后播放下一首"</string>
+
+    <string name="nomore">已经到底了</string>
+    <string name="nodata">数据为空</string>
+
+    <string name="tips_double_click_back">再按一次退回桌面</string>
+
+    <string name="tips_add_like">已添加收藏</string>
+    <string name="tips_remove_like">已取消收藏</string>
+
+    <string name="play_mode_sequence">顺序播放</string>
+    <string name="play_mode_repeat">循环播放</string>
+    <string name="play_mode_shuffle">随机播放</string>
+    <string name="play_mode_repeat_one">单曲循环</string>
+</resources>

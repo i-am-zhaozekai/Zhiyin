@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MainActivity">
+
+    <include
+        layout="@layout/act_main_playlist_popup"
+        android:paddingBottom="@dimen/player_bar_height"/>
+
+        <com.haha.zy.widget.PinSlidingLayout
+            android:id="@+id/player_bar_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/player_bar_height"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:background="#FEFFFFFF">
+
+            <include android:id="@id/secondary_item"
+                layout="@layout/act_main_player_menu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <include android:id="@id/primary_item"
+                layout="@layout/act_main_player_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </com.haha.zy.widget.PinSlidingLayout>
+
+</RelativeLayout>

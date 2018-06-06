@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="blue_default">#FF388EF7</color>
+    <color name="blue_dark">#FF0288d1</color>
+    <color name="blue_light">#FF76C8FA</color>
+    <color name="black_default">#FF555555</color>
+
+    <color name="colorStatusBarDefault">@color/blue_default</color>
+
+    <color name="def_bar_title_color">@color/black_default</color>
+
+    <color name="lrc_seek_progress">@color/blue_light</color>
+    <color name="lrc_seek_progress_secondary">@color/blue_dark</color>
+    <color name="lrc_seek_thumb">@color/blue_light</color>
+
+    <color name="pop_playlist_song">@android:color/black</color>
+    <color name="pop_playlist_singer">@color/black_default</color>
+    <color name="pop_playlist_current_song">@color/blue_dark</color>
+    <color name="pop_playlist_current_singer">@color/blue_dark</color>
+</resources>

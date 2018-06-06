@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_size">18dp</dimen>
+    <dimen name="title_icon_size">20dp</dimen>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_item_spacing">8dp</dimen>
+    <dimen name="nav_header_height">128dp</dimen>
+    <dimen name="nav_header_icon_size">64dp</dimen>
+
+    <dimen name="player_bar_height">72dp</dimen>
+    <dimen name="bar_dragflag_size">15dp</dimen>
+    <dimen name="bar_height">70dp</dimen>
+    <dimen name="player_artist_imgSize">56dp</dimen>
+
+    <dimen name="pop_height">40dp</dimen>
+    <dimen name="pop_Padding">10dp</dimen>
+
+    <dimen name="songitem_height">70dp</dimen>
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/nav_group_actions"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_msg_center"
+            android:icon="@drawable/ic_message"
+            android:title="消息中心" />
+        <item
+            android:id="@+id/nav_skin_center"
+            android:icon="@drawable/ic_skin"
+            android:title="皮肤中心" />
+        <item
+            android:id="@+id/nav_vip_center"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="音乐工具"/>
+        <item
+            android:id="@+id/nav_close_schedule"
+            android:icon="@drawable/ic_alarm_clock"
+            android:title="定时关闭"/>
+    </group>
+
+    <group android:id="@+id/nav_group_settings">
+        <item
+            android:id="@+id/nav_wifi_only"
+            android:icon="@drawable/ic_wifi_only"
+            android:title="仅WIFI联网"
+            app:actionLayout="@layout/act_main_nav_action_layout"/>
+        <item
+            android:id="@+id/nav_lyc_desktop"
+            android:icon="@drawable/ic_lyric_launcher"
+            android:title="桌面歌词"
+            app:actionLayout="@layout/act_main_nav_action_layout"/>
+        <item
+            android:id="@+id/nav_lyc_screen_lock"
+            android:icon="@drawable/ic_lyric_lock_screen"
+            android:title="锁屏歌词"
+            app:actionLayout="@layout/act_main_nav_action_layout"
+            app:showAsAction="always"/>
+    </group>
+</menu>

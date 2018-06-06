@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/player_bar_height"
+    android:background="@null"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginTop="12dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/divider"/>
+
+    <RelativeLayout
+        android:id="@id/pin_item"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:layout_alignParentLeft="true">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/artist_portrait_iv"
+            android:layout_width="@dimen/player_artist_imgSize"
+            android:layout_height="@dimen/player_artist_imgSize"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/singer_def"
+            app:riv_border_color="@android:color/black"
+            app:riv_border_width="2dp"
+            app:riv_oval="true" />
+
+    </RelativeLayout>
+
+    <com.haha.zy.widget.LrcSeekBar
+        android:id="@+id/lrc_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toRightOf="@id/pin_item"
+        android:layout_below="@id/divider"
+        android:max="0"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
+        android:progress="0"
+        android:secondaryProgress="0"
+        android:thumb="@null"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/lrc_seek_bar"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_toRightOf="@id/pin_item"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="2dp"
+            android:layout_weight="3">
+
+            <TextView
+                android:id="@+id/audio_name_iv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:text="@string/def_songName"
+                android:textColor="@android:color/black"
+                android:textSize="12dp"/>
+
+            <TextView
+                android:id="@+id/artist_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/audio_name_iv"
+                android:layout_marginTop="2dp"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="@string/def_artist"
+                android:textColor="#555555"
+                android:textSize="10dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/play_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:src="@drawable/bar_play" />
+
+            <ImageView
+                android:id="@+id/pause_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:src="@drawable/bar_pause"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/next_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:src="@drawable/bar_next" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/play_list_menu_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:src="@drawable/bar_menu" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

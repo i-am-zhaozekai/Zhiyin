@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PinSlidingLayout">
+        <attr name="primaryLayout" format="reference"/>
+        <attr name="secondaryLayout" format="reference"/>
+    </declare-styleable>
+</resources>
