@@ -24,4 +24,7 @@
 
 <img src="https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/player_rotated.jpeg" width="400">
 
+# 学习笔记
+- [知音开发过程遇到的问题](./notes/知音开发过程遇到的问题.md)
+
 
