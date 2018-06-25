@@ -2,15 +2,14 @@
 仿酷狗音乐客户端
 
 # Screenshot
+<img src="https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/main_lrc_progress.jpeg" width="200">
 
-![](https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/main_lrc_progress.jpeg)
+<img src="https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/main_lrc_widget.jpeg" width="200">
 
-![](https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/main_lrc_widget.jpeg)
+<img src="https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/main_playlist_popup.jpeg" width="200">
 
-![](https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/main_playlist_popup.jpeg)
+<img src="https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/player_lrc_full.jpeg" width="200">
 
-![](https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/player_lrc_full.jpeg)
+<img src="https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/player_lrc_two_line.jpeg" width="200">
 
-![](https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/player_lrc_two_line.jpeg)
-
-![](https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/player_rotated.jpeg)
+<img src="https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/player_rotated.jpeg" width="200">
