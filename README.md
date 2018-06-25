@@ -2,7 +2,7 @@
 仿酷狗音乐客户端
 
 # Screenshot
-<img src="https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/main_lrc_progress.jpeg" width="400">
+<img src="https://github.com/i-am-zhaozekai/Zhiyin/raw/master/screenshot/main_lrc_progress.jpeg" title="主" width="400">
 
 
 
