@@ -15,9 +15,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="def_text">乐乐音乐，开心每一天</string>
-    <string name="def_artist">乐乐音乐</string>
-    <string name="def_songName">开心每一天</string>
+    <string name="def_text">海内存知己，天涯若比邻</string>
+    <string name="def_artist">知音</string>
+    <string name="def_songName">海内存知己</string>
 
     <string name="error_play">"播放歌曲出错，1秒后播放下一首"</string>
 
@@ -33,4 +33,18 @@
     <string name="play_mode_repeat">循环播放</string>
     <string name="play_mode_shuffle">随机播放</string>
     <string name="play_mode_repeat_one">单曲循环</string>
+
+    <string name="tips_network_less">当前网络不可用，点击屏幕刷新</string>
+
+    <string name="tab_localmusic">本地音乐</string>
+    <string name="tab_like">喜欢-歌单</string>
+    <string name="tab_download">下载</string>
+    <string name="tab_centent">最近</string>
+
+    <string name="tab_music_lib">乐库</string>
+    <string name="tab_music_list">歌单</string>
+    <string name="tab_music_radio">电台</string>
+    <string name="tab_music_like">猜你喜欢</string>
+    <string name="tab_music_recommend">每日推荐</string>
+    <string name="tab_music_group">音乐圈</string>
 </resources>

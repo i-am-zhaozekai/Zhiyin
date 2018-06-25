@@ -4,4 +4,9 @@
         <attr name="primaryLayout" format="reference"/>
         <attr name="secondaryLayout" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="RingBackgroundLayout">
+        <attr name="fillColor" format="color"/>
+        <attr name="fillColorSelected" format="color"/>
+    </declare-styleable>
 </resources>

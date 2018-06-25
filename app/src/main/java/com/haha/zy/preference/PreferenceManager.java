@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.haha.zy.audio.AudioInfo;
-import com.haha.zy.constant.ResourceConstants;
 import com.haha.zy.player.PlaybackInfo;
 import com.haha.zy.player.PlayerManager;
 import com.haha.zy.util.FileUtil;
@@ -233,7 +232,8 @@ public class PreferenceManager {
     }*/
 
     private void save(Object object, String fileName) {
-        String filePath = FileUtil.getFilePath(mContext, ResourceConstants.PATH_CACHE_SERIALIZABLE, fileName);
+        String filePath = FileUtil.getFilePath(mContext, FileUtil.getDiskCacheDir(mContext),
+                FileUtil.PATH_CACHE_SERIALIZABLE + File.separator + fileName);
         if (object != null) {
             SerializationUtil.save(filePath, object);
         } else {
@@ -245,7 +245,7 @@ public class PreferenceManager {
     }
 
     private Object read(String fileName) {
-        String filePath = FileUtil.getFilePath(mContext, ResourceConstants.PATH_CACHE_SERIALIZABLE, fileName);
+        String filePath = FileUtil.getFilePath(mContext, FileUtil.PATH_CACHE_SERIALIZABLE, fileName);
         return SerializationUtil.read(filePath);
     }
 
@@ -259,11 +259,23 @@ public class PreferenceManager {
      */
     private int maxLrcFontSize = 50;
 
+    public int getMinLrcFontSize() {
+        return minLrcFontSize;
+    }
+
+    public int getMaxLrcFontSize() {
+        return maxLrcFontSize;
+    }
+
     /**
      * 歌词颜色集合
      */
     private String[] lrcColorStr = {"#fada83", "#fe8db6", "#feb88e",
             "#adfe8e", "#8dc7ff", "#e69bff"};
+
+    public String[] getLrcColorStr() {
+        return lrcColorStr;
+    }
 
     public int getLrcFontSize() {
         return (int) getValue(LYRIC_FONT_SIZE, 30);
@@ -279,7 +291,7 @@ public class PreferenceManager {
     }
 
     public void setLrcColorIndex(int lrcColorIndex) {
-        saveValue(PLAY_MODE, lrcColorIndex);
+        saveValue(LYRIC_COLOR_INDEX, lrcColorIndex);
     }
 
     public boolean isWire() {

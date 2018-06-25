@@ -29,7 +29,14 @@
         <activity android:name=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="com.haha.zy.action.MAIN" />
+                <action android:name="com.haha.zy.action.ui.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.AudioPlayActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="com.haha.zy.action.ui.AUDIO_PALY" />
             </intent-filter>
         </activity>
 

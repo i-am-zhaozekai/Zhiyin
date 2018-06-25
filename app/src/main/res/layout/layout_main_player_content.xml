@@ -172,7 +172,7 @@
                     android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
                     android:clickable="true"
-                    android:src="@drawable/bar_menu" />
+                    android:src="@drawable/playlist_menu_dark" />
 
             </RelativeLayout>
 

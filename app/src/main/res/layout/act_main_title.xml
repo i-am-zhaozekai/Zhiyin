@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <com.haha.zy.widget.IconfontIndicatorTextView
+        <com.haha.zy.widget.IconFontIndicatorTextView
             android:id="@+id/myImageButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -27,7 +27,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <com.haha.zy.widget.IconfontIndicatorTextView
+        <com.haha.zy.widget.IconFontIndicatorTextView
             android:id="@+id/recommendImageButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

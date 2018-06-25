@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bg_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <com.haha.zy.widget.RotatableLayout
+        android:id="@+id/rotateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/bg_audio_play_default">
+
+        <com.haha.zy.widget.SlidingImageView
+            android:id="@+id/sliding_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:id="@+id/lrc_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#50000000"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/lrc_title_height"
+                    android:layout_alignParentTop="true">
+
+                    <RelativeLayout
+                        android:id="@+id/backImg"
+                        android:layout_width="@dimen/title_height"
+                        android:layout_height="@dimen/title_height"
+                        android:background="@drawable/base_button"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:layout_width="@dimen/title_height"
+                            android:layout_height="@dimen/title_height"
+                            android:layout_centerInParent="true"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="2dp"
+                            android:background="@mipmap/aiv" />
+
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toLeftOf="@+id/right_flag"
+                        android:layout_toRightOf="@+id/backImg"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/song_name_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentTop="true"
+                            android:layout_toEndOf="@+id/backImg"
+                            android:layout_weight="1"
+                            android:ellipsize="marquee"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center|center_horizontal"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:singleLine="true"
+                            android:text="@string/def_songName"
+                            android:textColor="#fff"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/singer_name_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:ellipsize="marquee"
+                            android:gravity="center|center_horizontal"
+                            android:singleLine="true"
+                            android:text="@string/def_artist"
+                            android:textColor="#fff"
+                            android:textSize="14dp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/right_flag"
+                        android:layout_width="@dimen/title_height"
+                        android:layout_height="@dimen/title_height"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"></View>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/lrc_playbar"
+                    android:layout_below="@+id/title"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="10dp">
+
+                    <com.haha.zy.widget.MultiplyLineLyricView
+                        android:id="@+id/lyric_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <ImageView
+                        android:id="@+id/lrc_translation_btn"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:background="@mipmap/lyric_translation_show"
+                        android:clickable="true"
+                        android:visibility="invisible" />
+
+
+                    <ImageView
+                        android:id="@+id/lrc_transliteration_btn"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:background="@mipmap/lyric_transliteration_show"
+                        android:clickable="true"
+                        android:visibility="invisible" />
+
+
+                    <ImageView
+                        android:id="@+id/lrc_multi_translation_btn"
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:background="@mipmap/lyric_both_hide"
+                        android:clickable="true"
+                        android:visibility="invisible" />
+
+                </RelativeLayout>
+
+
+                <include
+                    android:id="@+id/lrc_playbar"
+                    layout="@layout/layout_lrc_playbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/lrc_bar_height"
+                    android:layout_alignParentBottom="true"></include>
+
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </com.haha.zy.widget.RotatableLayout>
+
+    <include
+        layout="@layout/act_main_playlist_popup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"></include>
+
+    <include
+        layout="@layout/layout_lrc_setting_pop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"></include>
+
+    <include
+        layout="@layout/layout_lrc_singerlist_pop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"></include>
+
+    <include
+        layout="@layout/layout_lrc_songinfo_pop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"></include>-->
+</RelativeLayout>

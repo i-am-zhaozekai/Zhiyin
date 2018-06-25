@@ -16,6 +16,8 @@ import java.util.List;
 
 public class ZYApplication extends Application {
 
+    public static final String APP_NAME = "ZhiYin";
+
     private static ZYApplication instance;
     public static ZYApplication getInstance() {
         return instance;

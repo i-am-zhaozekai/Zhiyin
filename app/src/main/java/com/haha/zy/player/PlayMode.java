@@ -95,7 +95,8 @@ public abstract class PlayMode {
 
     public abstract String getName(Context context);
     public abstract int getValue();
-    public abstract int getIconResId();
+
+    public abstract int getIconResId(boolean lightStyle);
     public abstract int getNextModeValue();
 
     private static final class OrderMode extends PlayMode {
@@ -135,8 +136,8 @@ public abstract class PlayMode {
         }
 
         @Override
-        public int getIconResId() {
-            return R.drawable.sequence_dark;
+        public int getIconResId(boolean lightStyle) {
+            return lightStyle ? R.drawable.sequence_light : R.drawable.sequence_dark;
         }
 
         @Override
@@ -169,8 +170,8 @@ public abstract class PlayMode {
         }
 
         @Override
-        public int getIconResId() {
-            return R.drawable.shuffle_dark;
+        public int getIconResId(boolean lightStyle) {
+            return lightStyle ? R.drawable.shuffle_light: R.drawable.shuffle_dark;
         }
 
         @Override
@@ -243,8 +244,8 @@ public abstract class PlayMode {
         }
 
         @Override
-        public int getIconResId() {
-            return R.drawable.repeat_dark;
+        public int getIconResId(boolean lightStyle) {
+            return lightStyle ? R.drawable.repeat_light : R.drawable.repeat_dark;
         }
 
         @Override
@@ -288,8 +289,9 @@ public abstract class PlayMode {
         }
 
         @Override
-        public int getIconResId() {
-            return R.drawable.repeat_one_dark;
+        public int getIconResId(boolean lightStyle) {
+
+            return lightStyle ? R.drawable.repeat_one_light : R.drawable.repeat_one_dark;
         }
 
         @Override

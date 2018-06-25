@@ -61,11 +61,6 @@ public class SplashActivity extends BaseActivity implements EasyPermissions.Perm
 
     private void showAds() {
 
-        List<AudioInfo> data = DatabaseHelper.getInstance(getApplicationContext()).getAllLocalAudio();
-        PreferenceManager.getInstance(getApplicationContext()).setCurrentPlaylist(data);
-        PreferenceManager.getInstance(getApplicationContext()).setCurrentAudio(data.get(12));
-        PreferenceManager.getInstance(getApplicationContext()).setCurrentAudioHash(data.get(12).getHash());
-
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
@@ -77,7 +72,7 @@ public class SplashActivity extends BaseActivity implements EasyPermissions.Perm
     private void initAppData() {
 
         boolean isFirst = mPrefMgr.isFirst();
-        if (true) {
+        if (isFirst) {
 
             final List<AudioInfo> audioInfos = new ArrayList<>();
 
@@ -112,14 +107,29 @@ public class SplashActivity extends BaseActivity implements EasyPermissions.Perm
                 DatabaseHelper.getInstance(getApplicationContext()).add(audioInfos);
             }
 
-            mDelayTime *= 2;
+            mDelayTime = 2000L;
 
             mPrefMgr.setFirst(false);
         } else {
-            mDelayTime *= 3;
+            mDelayTime = 3000L;
         }
+
         //初始化配置数据
         initPreferencesData();
+
+        //初始化上次的播放数据
+        List<AudioInfo> playList = mPrefMgr.getCurrentPlaylist();
+        if (playList == null || playList.size() == 0) {
+            Log.d("XXX", "playlist 0");
+            List<AudioInfo> data = DatabaseHelper.getInstance(getApplicationContext()).getAllLocalAudio();
+            if (data != null && data.size() > 0) {
+                PreferenceManager.getInstance(getApplicationContext()).setCurrentPlaylist(data);
+                PreferenceManager.getInstance(mContext).setCurrentAudio(data.get(0));
+                PreferenceManager.getInstance(mContext).setCurrentAudioHash(data.get(0).getHash());
+            }
+
+        }
+
         //loadSplashMusic();
         mHandler.postDelayed(mRunnable, mDelayTime);
     }
@@ -158,7 +168,7 @@ public class SplashActivity extends BaseActivity implements EasyPermissions.Perm
         mPrefMgr.setCurrentAudioHash("");
         mPrefMgr.setPlayMode(0);
         mPrefMgr.setLrcColorIndex(0);
-        mPrefMgr.setLrcFontSize(30);
+        mPrefMgr.setLrcFontSize(50);
         mPrefMgr.setLrcMultiLine(true);
     }
 

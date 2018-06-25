@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 
 import com.haha.zy.R;
 import com.haha.zy.audio.AudioInfo;
-import com.haha.zy.constant.ResourceConstants;
 import com.haha.zy.preference.PreferenceManager;
 import com.haha.zy.util.FileUtil;
 import com.haha.zy.util.ToastUtil;
@@ -158,7 +157,10 @@ public class MediaPlaybackService extends Service {
             playLocalMusic(playbackInfo);
         } else {
             String fileName = audioInfo.getArtist() + " - " + audioInfo.getTitle();
-            String filePath = FileUtil.getFilePath(getApplicationContext(), ResourceConstants.PATH_AUDIO, fileName + "." + audioInfo.getFileExt());
+            String filePath = FileUtil.getFilePath(mContext,
+                    FileUtil.getAppPublicDirectory(mContext, FileUtil.PATH_AUDIO),
+                    fileName + "." + audioInfo.getFileExt());
+
             //设置文件路径
             audioInfo.setFilePath(filePath);
             File audioFile = new File(filePath);

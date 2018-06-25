@@ -6,8 +6,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,9 +23,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.request.RequestOptions;
 import com.haha.zy.R;
 import com.haha.zy.adapter.MainPopPlayListAdapter;
+import com.haha.zy.adapter.TabFragmentAdapter;
 import com.haha.zy.audio.AudioInfo;
+import com.haha.zy.net.api.kugou.SingerAvatorURLGetter;
+import com.haha.zy.glide.SingerModel;
+import com.haha.zy.glide.ZYGlideModule;
+import com.haha.zy.lyric.LyricsManager;
+import com.haha.zy.lyric.utils.LyricsUtil;
 import com.haha.zy.player.EventManager;
 import com.haha.zy.player.MediaPlaybackService;
 import com.haha.zy.player.PlayMode;
@@ -32,8 +43,11 @@ import com.haha.zy.player.PlayerManager;
 import com.haha.zy.preference.PreferenceManager;
 import com.haha.zy.util.FileUtil;
 import com.haha.zy.util.ToastUtil;
+import com.haha.zy.widget.FloatLyricsView;
+import com.haha.zy.widget.IconFontIndicatorTextView;
 import com.haha.zy.widget.LinearLayoutRecyclerView;
 import com.haha.zy.widget.LrcSeekBar;
+import com.haha.zy.widget.PinSlidingLayout;
 import com.jaeger.library.StatusBarUtil;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -49,16 +63,41 @@ import java.util.List;
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,
         BaseActivity.StatusBarDecor {
 
+    private RequestManager mSingerImageRequestManager;
+    private RequestOptions mSingerImageOptions;
+
+    /**
+     * 主界面跳转到歌词界面的code
+     */
+    private final int REQUEST_CODE_LRC_ACTIVITY = 0;
+    /**
+     * 歌词界面跳转到主界面的code
+     */
+    private final int RESULT_CODE_LRC_ACTIVITY = 1;
+
     private Context mContext;
     private PreferenceManager mPrefMgr;
 
+    // 双击返回桌面间隔
+    private static final long DOUBLE_CLICK_BACK_INTERVAL = 2000L;
+    private long mFirstBackClickTime = 0L;
+
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
+
+    private ViewPager mViewPager;
+
+    private FloatLyricsView mFloatLyricsView;
 
     @Override
     protected void init() {
         mContext = getApplicationContext();
         mPrefMgr = PreferenceManager.getInstance(mContext);
+
+        mSingerImageRequestManager = Glide.with(this);
+        mSingerImageOptions = new RequestOptions();
+        mSingerImageOptions.signature(ZYGlideModule.obtainSignatureKey());
+        mSingerImageOptions.placeholder(R.mipmap.singer_def);
     }
 
     @Override
@@ -68,6 +107,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     protected void initViews(Bundle savedInstanceState, final View contentRoot) {
+        initTitleBarAndDrawerView();
+        initPageView();
+        initPlayerViews();
+        initListPopView();
+        initService();
+
+        // 设置沉浸式状态栏
+        setStatusBarDecor(this);
+    }
+
+    private void initTitleBarAndDrawerView(){
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -79,16 +129,97 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         mDrawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        setStatusBarDecor(this);
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
 
-        initPlayerViews();
+    private static final int FRAGMENT_INDEX_LISTEN = 0;
+    private static final int FRAGMENT_INDEX_SHOW = 1;
+    private static final int FRAGMENT_COUNT = 2;
+    private IconFontIndicatorTextView[] mTabButtons;
 
-        initListPopView();
+    private int mSelectedIndex = 0;
 
-        initService();
+    private void initTitleView() {
+        mTabButtons = new IconFontIndicatorTextView[FRAGMENT_COUNT];
+
+        //听
+        mTabButtons[FRAGMENT_INDEX_LISTEN] = findViewById(R.id.myImageButton);
+        mTabButtons[FRAGMENT_INDEX_LISTEN].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                boolean selected = mTabButtons[FRAGMENT_INDEX_LISTEN].isSelected();
+                if (!selected) {
+                    mViewPager.setCurrentItem(FRAGMENT_INDEX_LISTEN, true);
+                }
+            }
+        });
+        mTabButtons[FRAGMENT_INDEX_LISTEN].setSelected(true);
+
+        //唱
+        mTabButtons[FRAGMENT_INDEX_SHOW] = findViewById(R.id.recommendImageButton);
+        mTabButtons[FRAGMENT_INDEX_SHOW].setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean selected = mTabButtons[FRAGMENT_INDEX_SHOW].isSelected();
+                if (!selected) {
+                    mViewPager.setCurrentItem(FRAGMENT_INDEX_SHOW, true);
+                }
+            }
+        });
+        mTabButtons[FRAGMENT_INDEX_SHOW].setSelected(false);
+
+
+        //搜索
+            /*mSearchButton = findViewById(R.id.searchImageButton);
+            mSearchButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    //不允许拖动
+                    slidingMenuLayout.setAllowDrag(false);
+                    mFragmentListener.openFragment(new SearchFragment());
+
+
+                }
+            });
+            mSearchButton.setConvert(true);
+            mSearchButton.setPressed(false);*/
+
+    }
+
+    private void initPageView() {
+        mViewPager = findViewById(R.id.fragment_view_pager);
+
+        List<Fragment> fragments = new ArrayList<Fragment>();
+        fragments.add(new ListenFragment());
+        fragments.add(new ShowFragment());
+
+        TabFragmentAdapter adapter = new TabFragmentAdapter(getSupportFragmentManager(), fragments);
+        mViewPager.setAdapter(adapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                if (position != mSelectedIndex) {
+                    mTabButtons[mSelectedIndex].setSelected(false);
+                    mTabButtons[position].setSelected(true);
+                    mSelectedIndex = position;
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -96,8 +227,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.loadData(isRestoreInstance);
 
         PlayerManager.getInstance(getApplicationContext()).initSongInfoData();
-
-
     }
 
     @Override
@@ -113,7 +242,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
 
-    private View mPlayerBarContainer = null;
+    private PinSlidingLayout mPlayerBarContainer = null;
     private RoundedImageView mSingerImageView = null;
     private ImageView mPlayButton = null;
     private ImageView mPauseButton = null;
@@ -123,36 +252,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void initPlayerViews() {
 
-        //
         mPlayerBarContainer = findViewById(R.id.player_bar_container);
+        mPlayerBarContainer.setOnClickListener(new PinSlidingLayout.OnClickListener() {
 
-        mArtistNameTV = mPlayerBarContainer.findViewById(R.id.artist_name_tv);
-        mAudioTitleTV = mPlayerBarContainer.findViewById(R.id.audio_name_iv);
-        mSingerImageView = mPlayerBarContainer.findViewById(R.id.artist_portrait_iv);
-
-        /*mSwipeoutLayout = findViewById(R.id.playerBar);
-        mSwipeoutLayout.setBackgroundColor(ColorUtil.parserColor("#ffffff", 245));
-        ViewGroup barContentView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.layout_main_player_content, null);
-        barContentView.setBackgroundColor(Color.TRANSPARENT);
-
-        ViewGroup barMenuView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.layout_main_player_menu, null);
-        barMenuView.setBackgroundColor(Color.TRANSPARENT);
-        //
-        mFloatLyricsView = barMenuView.findViewById(R.id.floatLyricsView);
-
-        //歌手头像
-        mSingerImg = barContentView.findViewById(R.id.play_bar_artist);
-        mSingerImg.setTag(null);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.singer_def);
-        mSingerImg.setImageDrawable(new BitmapDrawable(bitmap));
-
-
-        mBarCloseFlagView = barContentView.findViewById(R.id.bar_dragflagClosed);
-        mBarOpenFlagView = barContentView.findViewById(R.id.bar_dragflagOpen);*/
-
-        /*mSwipeoutLayout.setPlayerBarOnClickListener(new SwipeoutLayout.PlayerBarOnClickListener() {
             @Override
-            public void onClick() {
+            public void onClick(View view) {
 
                 if (isPopViewShow) {
                     hidePopView();
@@ -160,22 +264,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 }
 
                 //设置底部点击后，下沉动画
-                TranslateAnimation transAnim = new TranslateAnimation(0, 0, 0, mPlayerBarParentLinearLayout.getHeight());
+                TranslateAnimation transAnim = new TranslateAnimation(0, 0, 0, mPlayerBarContainer.getHeight());
                 transAnim.setDuration(500);
                 transAnim.setFillAfter(true);
-                mPlayerBarParentLinearLayout.setAnimation(transAnim);
-                mPlayerBarParentLinearLayout.startAnimation(transAnim);
+                mPlayerBarContainer.setAnimation(transAnim);
+                mPlayerBarContainer.startAnimation(transAnim);
 
-
-                //
-                Intent intent = new Intent(MainActivity.this, LrcActivity.class);
-                startActivityForResult(intent, MAINTOLRCRESULTCODE);
+                Intent intent = new Intent(MainActivity.this, AudioPlayActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_LRC_ACTIVITY);
                 //去掉动画
                 overridePendingTransition(0, 0);
             }
         });
 
-        */
+        mArtistNameTV = mPlayerBarContainer.findViewById(R.id.artist_name_tv);
+        mAudioTitleTV = mPlayerBarContainer.findViewById(R.id.audio_name_iv);
+        mSingerImageView = mPlayerBarContainer.findViewById(R.id.artist_portrait_iv);
+
+        mFloatLyricsView = mPlayerBarContainer.findViewById(R.id.floatLyricsView);
 
         //播放
         mPlayButton = findViewById(R.id.play_iv);
@@ -253,9 +359,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 //获取行歌词
                 //TODO:
-                /*if (mFloatLyricsView.getLyricsUtil() != null && mFloatLyricsView.getLyricsUtil().getHash().equals(mHPApplication.getCurAudioMessage().getAudioInfo().getHash())) {
+                if (mFloatLyricsView.getLyricsUtil() != null && mFloatLyricsView.getLyricsUtil().getHash().equals(mPrefMgr.getPlaybackInfo().getAudioInfo().getHash())) {
                     return mFloatLyricsView.getLyricsUtil().getLineLrc(mFloatLyricsView.getLyricsLineTreeMap(), mLrcSeekBar.getProgress());
-                }*/
+                }
 
                 return null;
             }
@@ -329,6 +435,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             mLrcSeekBar.setSecondaryProgress(0);
             mLrcSeekBar.setMax(0);
 
+            mFloatLyricsView.setLyricsUtil(null);
+
             //隐藏
             //mSingerImg.setTag(null);
 
@@ -337,7 +445,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             mSingerImg.setImageDrawable(new BitmapDrawable(bitmap));
 
             //
-            mFloatLyricsView.setLyricsUtil(null);
+
 
             //重置弹出窗口播放列表
             */
@@ -363,22 +471,26 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             mLrcSeekBar.setMax((int) audioInfo.getDuration());
             mLrcSeekBar.setProgress((int) playbackInfo.getProgress());
             mLrcSeekBar.setSecondaryProgress(0);
-            /*
+
             //加载歌手图片
-            ImageUtil.loadSingerImage(mHPApplication, getApplicationContext(), mSingerImg, audioInfo.getSingerName());
+            //ImageUtil.loadSingerImage(mHPApplication, getApplicationContext(), mSingerImg, audioInfo.getSingerName());
+
+            String singerName = audioInfo.getArtist();
+            mSingerImageRequestManager.load(new SingerModel(singerName, new SingerAvatorURLGetter()))
+                    .apply(mSingerImageOptions)
+                    .into(mSingerImageView);
 
             //加载歌词
             String keyWords = "";
-            if (audioInfo.getSingerName().equals("未知")) {
-                keyWords = audioInfo.getSongName();
+            if (audioInfo.getArtist().equals("未知")) {
+                keyWords = audioInfo.getTitle();
             } else {
-                keyWords = audioInfo.getSingerName() + " - " + audioInfo.getSongName();
+                keyWords = audioInfo.getArtist() + " - " + audioInfo.getTitle();
             }
-            LyricsManager.getLyricsManager(mHPApplication, getApplicationContext()).loadLyricsUtil(keyWords, keyWords, audioInfo.getDuration() + "", audioInfo.getHash());
+            LyricsManager.getLyricsManager(getApplicationContext()).loadLyricsUtil(keyWords, keyWords, audioInfo.getDuration() + "", audioInfo.getHash());
 
-            //
             mFloatLyricsView.setLyricsUtil(null);
-            */
+
             //设置弹出窗口播放列表
             if (isPopViewShow) {
                 if (mPopPlayListAdapter != null) {
@@ -411,9 +523,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 AudioInfo audioInfo = PreferenceManager.getInstance(getApplicationContext()).getCurrentAudio();
                 if (audioInfo != null) {
                     //更新歌词
-                    /*if (mFloatLyricsView.getLyricsUtil() != null && mFloatLyricsView.getLyricsUtil().getHash().equals(audioInfo.getHash())) {
+                    if (mFloatLyricsView.getLyricsUtil() != null && mFloatLyricsView.getLyricsUtil().getHash().equals(audioInfo.getHash())) {
                         mFloatLyricsView.updateView((int) playbackInfo.getProgress());
-                    }*/
+                    }
                 }
 
             }
@@ -434,25 +546,26 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //        }
         else if (action.equals(EventManager.ACTION_LRCLOADED)) {
             //TODO:
-            /*if (mHPApplication.getCurAudioMessage() != null && mHPApplication.getCurAudioInfo() != null) {
+            PlaybackInfo playbackInfo = mPrefMgr.getPlaybackInfo();
+            AudioInfo currentAudio = mPrefMgr.getCurrentAudio();
+            if (playbackInfo != null && currentAudio != null) {
                 //歌词加载完成
-                AudioMessage curAudioMessage = mHPApplication.getCurAudioMessage();
-                AudioMessage audioMessage = (AudioMessage) intent.getSerializableExtra(AudioMessage.KEY);
-                String hash = audioMessage.getHash();
-                if (hash.equals(mHPApplication.getCurAudioInfo().getHash())) {
+                PlaybackInfo playbackInfo1 = (PlaybackInfo) intent.getSerializableExtra(PlaybackInfo.KEY);
+                String hash = playbackInfo1.getHash();
+                if (hash.equals(currentAudio.getHash())) {
                     //
-                    LyricsUtil lyricsUtil = LyricsManager.getLyricsManager(mHPApplication, getApplicationContext()).getLyricsUtil(hash);
+                    LyricsUtil lyricsUtil = LyricsManager.getLyricsManager(getApplicationContext()).getLyricsUtil(hash);
                     if (lyricsUtil != null) {
                         if (lyricsUtil.getHash() != null && lyricsUtil.getHash().equals(hash) && mFloatLyricsView.getLyricsUtil() != null) {
                             //已加载歌词，不用重新加载
                         } else {
                             lyricsUtil.setHash(hash);
                             mFloatLyricsView.setLyricsUtil(lyricsUtil);
-                            mFloatLyricsView.updateView((int) curAudioMessage.getPlayProgress());
+                            mFloatLyricsView.updateView((int) playbackInfo1.getProgress());
                         }
                     }
                 }
-            }*/
+            }
         } else if (action.equals(EventManager.ACTION_LRCSEEKTO)) {
             PreferenceManager prefMgr = PreferenceManager.getInstance(getApplicationContext());
             PlaybackInfo playbackInfo = prefMgr.getPlaybackInfo();
@@ -461,9 +574,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 AudioInfo currentAudio = prefMgr.getCurrentAudio();
                 if (currentAudio != null) {
-                    /*if (mFloatLyricsView.getLyricsUtil() != null && mFloatLyricsView.getLyricsUtil().getHash().equals(currentAudio.getHash())) {
+                    if (mFloatLyricsView.getLyricsUtil() != null && mFloatLyricsView.getLyricsUtil().getHash().equals(currentAudio.getHash())) {
                         mFloatLyricsView.updateView((int) playbackInfo.getProgress());
-                    }*/
+                    }
                 }
             }
 
@@ -583,7 +696,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      */
     private void updatePlayModeView(int playModeValue, boolean isTipShow, boolean updatePreference) {
         PlayMode mode = PlayMode.getMode(playModeValue);
-        mPopPlayModeIv.setImageResource(mode.getIconResId());
+        mPopPlayModeIv.setImageResource(mode.getIconResId(false));
 
         String modeName = mode.getName(mContext);
         List<AudioInfo> currentPlaylist = mPrefMgr.getCurrentPlaylist();
@@ -640,7 +753,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             currentPlaylist = new ArrayList<AudioInfo>();
         }
         //mCurPLSizeTv.setText(currentPlaylist.size() + "");
-        mPopPlayListAdapter = new MainPopPlayListAdapter(getApplicationContext(), currentPlaylist);
+        mPopPlayListAdapter = new MainPopPlayListAdapter(getApplicationContext(), currentPlaylist,
+                mSingerImageRequestManager, mSingerImageOptions );
         mCurRecyclerView.setAdapter(mPopPlayListAdapter);
 
 
@@ -682,8 +796,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     // --------------------------- End Playlist Popup ---------------------------
 
-    private static final long DOUBLE_CLICK_BACK_INTERVAL = 2000L;
-    private long mFirstBackClickTime = 0L;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_LRC_ACTIVITY) {
+            //if (resultCode == RESULT_CODE_LRC_ACTIVITY) {
+
+                //设置底部点击后，下沉动画
+                TranslateAnimation transAnim = new TranslateAnimation(0, 0, mPlayerBarContainer.getHeight(), 0);
+                transAnim.setDuration(150);
+                transAnim.setFillAfter(true);
+                mPlayerBarContainer.setAnimation(transAnim);
+                mPlayerBarContainer.startAnimation(transAnim);
+
+
+            //}
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -697,7 +827,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             return;
         }
 
-        if ((System.currentTimeMillis() - mFirstBackClickTime) > 2000) {
+        if ((System.currentTimeMillis() - mFirstBackClickTime) > DOUBLE_CLICK_BACK_INTERVAL) {
             ToastUtil.show(mContext, R.string.tips_double_click_back);
             mFirstBackClickTime = System.currentTimeMillis();
         } else {
@@ -711,6 +841,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     protected void onDestroy() {
+        Intent playbackService = new Intent(this, MediaPlaybackService.class);
+        stopService(playbackService);
+
+        mEventManager.release();
+
         super.onDestroy();
     }
 }

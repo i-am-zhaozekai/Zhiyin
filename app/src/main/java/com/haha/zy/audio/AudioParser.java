@@ -58,7 +58,7 @@ public class AudioParser {
             return null;
         }
 
-        String fileName = FileUtil.getFileNameWithoutExt(audioFile);
+        String fileName = FileUtil.getFileNameWithoutExt(audioFile.getName());
         String audioName = fileName;
         String artistName = null;
         if (fileName.contains("-")) {

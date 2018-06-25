@@ -1,7 +1,11 @@
 package com.haha.zy.util;
 
 import android.content.Context;
+import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
+
+import com.haha.zy.ZYApplication;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -15,6 +19,21 @@ import java.util.List;
  */
 
 public class FileUtil {
+
+    /**
+     * 歌曲目录
+     */
+    public final static String PATH_AUDIO = "zymusic" + File.separator + "download";
+
+    /**
+     * 序列化对象保存路径
+     */
+    public final static String PATH_CACHE_SERIALIZABLE = "serializable";
+
+    /**
+     * 歌词目录
+     */
+    public final static String PATH_LYRICS = "lyrics";
 
     private static final long SIZE_KB = 1024L;
     private static final long SIZE_MB = 1024L * SIZE_KB;
@@ -85,8 +104,7 @@ public class FileUtil {
     /**
      * 获取不带后缀名的文件名
      */
-    public static String getFileNameWithoutExt(File file) {
-        String fileName = file.getName();
+    public static String getFileNameWithoutExt(String fileName) {
         if (!TextUtils.isEmpty(fileName)) {
             int dot = fileName.lastIndexOf('.');
             if ((dot > -1) && (dot < (fileName.length()))) {
@@ -96,12 +114,16 @@ public class FileUtil {
         return fileName;
     }
 
-    public static String getFilePath(Context context, String tempFilePath, String fileName) {
+    public static String getFilePath(Context context, String basePath, String fileName) {
         if (TextUtils.isEmpty(fileName)) {
             fileName = "";
         }
 
-        String filePath = context.getCacheDir().getPath() + File.separator + tempFilePath + File.separator + fileName;
+        if (TextUtils.isEmpty(basePath)){
+            basePath = getDiskCacheDir(context);
+        }
+
+        String filePath = basePath + File.separator + fileName;
 
         File file = new File(filePath);
         if(!fileName.equals("")){
@@ -115,5 +137,32 @@ public class FileUtil {
         }
 
         return filePath;
+    }
+
+    public static String getAppPublicDirectory(Context context, @Nullable String fileName) {
+        if (TextUtils.isEmpty(fileName)) {
+            fileName = ZYApplication.APP_NAME;
+        }
+
+        String publicAppPath = null;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            publicAppPath = Environment.getExternalStoragePublicDirectory(fileName).getPath();
+        } else {
+            publicAppPath = context.getFilesDir().getPath();
+        }
+        return publicAppPath;
+
+    }
+
+    public static String getDiskCacheDir(Context context) {
+        String cachePath = null;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = context.getExternalCacheDir().getPath();
+        } else {
+            cachePath = context.getCacheDir().getPath();
+        }
+        return cachePath;
     }
 }

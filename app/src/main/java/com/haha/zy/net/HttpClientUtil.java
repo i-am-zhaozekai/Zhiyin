@@ -21,6 +21,9 @@ import okhttp3.ResponseBody;
 
 public class HttpClientUtil {
 
+    private static final String DEFAULT_URL_ENCODER = "UTF-8";
+    private static final char PARAM_SEPARATOR_CHAR = '&';
+
     /**
      * 连接超时时间
      */
@@ -166,12 +169,12 @@ public class HttpClientUtil {
                 if (!isFirst) {
                     isFirst = true;
                 } else {
-                    paramSB.append("&");
+                    paramSB.append(PARAM_SEPARATOR_CHAR);
                 }
 
                 // 对参数进行 URLEncoder
                 paramSB.append(String.format("%s=%s", param.getKey(),
-                        URLEncoder.encode(param.getValue() + "", "utf-8")));
+                        URLEncoder.encode(param.getValue().toString(), DEFAULT_URL_ENCODER)));
 
             }
         }

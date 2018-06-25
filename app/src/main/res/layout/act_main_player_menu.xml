@@ -16,18 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--<com.zlm.hp.widget.lrc.FloatLyricsView
-            android:id="@+id/floatLyricsView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp" />-->
-
-        <View
+        <com.haha.zy.widget.FloatLyricsView
             android:id="@+id/floatLyricsView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp" />
-
 
     </RelativeLayout>
 

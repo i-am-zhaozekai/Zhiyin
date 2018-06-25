@@ -156,9 +156,9 @@ public class PinSlidingLayout extends LinearLayout{
                     mFirstX = 0;
 
                     if (Math.abs(tDeltaX) < mTouchSlop) {
-                            /*if (playerBarOnClickListener != null) {
-                                playerBarOnClickListener.onClick();
-                            }*/
+                            if (mOnClickListener != null) {
+                                mOnClickListener.onClick(this);
+                            }
                     }
 
                     if (!isDraggingMode) {
@@ -267,5 +267,20 @@ public class PinSlidingLayout extends LinearLayout{
             mVelocityTracker.recycle();
             mVelocityTracker = null;
         }
+    }
+
+    private OnClickListener mOnClickListener = null;
+
+    public void setOnClickListener(OnClickListener listener) {
+        mOnClickListener = listener;
+    }
+
+    public interface OnClickListener {
+        /**
+         * Called when a view has been clicked.
+         *
+         * @param v The view that was clicked.
+         */
+        void onClick(View v);
     }
 }

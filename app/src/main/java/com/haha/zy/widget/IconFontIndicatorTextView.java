@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 
 import com.haha.zy.font.FontUtil;
 
-public class IconfontIndicatorTextView extends AppCompatTextView {
+public class IconFontIndicatorTextView extends AppCompatTextView {
 
     private float oldTextSize = -1f;
     /**
@@ -23,17 +23,17 @@ public class IconfontIndicatorTextView extends AppCompatTextView {
      */
     private boolean isSelected = false;
 
-    public IconfontIndicatorTextView(Context context) {
+    public IconFontIndicatorTextView(Context context) {
         super(context);
         init(context);
     }
 
-    public IconfontIndicatorTextView(Context context, @Nullable AttributeSet attrs) {
+    public IconFontIndicatorTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public IconfontIndicatorTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public IconFontIndicatorTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }

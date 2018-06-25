@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.haha.zy.audio.AudioInfo;
+import com.haha.zy.db.DatabaseHelper;
 import com.haha.zy.preference.PreferenceManager;
 
 import java.util.HashMap;
@@ -41,26 +42,6 @@ public class PlayerManager {
         public static final int PLAYNET = 3;
 
     }
-
-    public static final class Mode {
-        /**
-         * 顺序播放
-         */
-        public static final int ORDER = 0;
-        /**
-         * 随机播放
-         */
-        public static final int SHUFFLE = 1;
-        /**
-         * 循环播放
-         */
-        public static final int REPEAT_ALL = 2;
-        /**
-         * 单曲循环
-         */
-        public static final int REPEAT_ONCE = 3;
-    }
-
 
     public AudioInfo getPreviousSong(int playMode) {
         return PlayMode.getMode(playMode).getPreviousSong(mContext);
@@ -123,8 +104,6 @@ public class PlayerManager {
                     initIntent.putExtra(PlaybackInfo.KEY, playbackInfo);
                     initIntent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
                     mContext.sendBroadcast(initIntent);
-
-
                 }
             }
             if (!flag) {
@@ -148,151 +127,4 @@ public class PlayerManager {
         mPrefMgr.setPlaybackInfo(null);
     }
 
-    /**
-     * 上一首
-     *
-     * @param playModel
-     */
-    public AudioInfo preMusic(int playModel) {
-        AudioInfo currentAudio = mPrefMgr.getCurrentAudio();
-        PlaybackInfo playbackInfo = mPrefMgr.getPlaybackInfo();
-        List<AudioInfo> currentPlaylist = mPrefMgr.getCurrentPlaylist();
-
-        if (currentAudio == null || playbackInfo == null || currentPlaylist == null) {
-            return null;
-        }
-
-        //获取播放索引
-        int playIndex = getCurPlayIndex();
-
-        if (playIndex == -1) {
-            return null;
-        }
-
-        switch (playModel) {
-            case Mode.ORDER:
-                // 顺序播放
-                playIndex--;
-                if (playIndex < 0) {
-                    return null;
-                }
-
-
-                if (currentPlaylist.size() > 0) {
-                    return currentPlaylist.get(playIndex);
-                }
-
-                break;
-            case Mode.SHUFFLE:
-                // 随机播放
-
-                playIndex = new Random().nextInt(currentPlaylist.size());
-                if (currentPlaylist.size() > 0) {
-                    return currentPlaylist.get(playIndex);
-                }
-                break;
-            case Mode.REPEAT_ALL:
-                // 循环播放
-                playIndex--;
-                if (playIndex < 0) {
-                    playIndex = 0;
-                }
-                ;
-                if (playIndex >= currentPlaylist.size()) {
-                    playIndex = 0;
-                }
-
-                if (currentPlaylist.size() != 0) {
-                    return currentPlaylist.get(playIndex);
-                }
-
-                break;
-            case Mode.REPEAT_ONCE:
-                // 单曲播放
-                return currentPlaylist.get(playIndex);
-
-        }
-        return null;
-    }
-
-
-    /**
-     * 下一首
-     *
-     * @param playModel 播放模式
-     * @return
-     */
-    public AudioInfo nextMusic(int playModel) {
-        AudioInfo currentAudio = mPrefMgr.getCurrentAudio();
-        PlaybackInfo playbackInfo = mPrefMgr.getPlaybackInfo();
-        List<AudioInfo> currentPlaylist = mPrefMgr.getCurrentPlaylist();
-
-        if (currentAudio == null || playbackInfo == null || currentPlaylist == null) {
-            return null;
-        }
-        //获取播放索引
-        int playIndex = getCurPlayIndex();
-
-        if (playIndex == -1) {
-            return null;
-        }
-
-        switch (playModel) {
-            case Mode.ORDER:
-                // 顺序播放
-                playIndex++;
-                if (playIndex >= currentPlaylist.size()) {
-                    return null;
-                }
-                if (currentPlaylist.size() > 0) {
-                    return currentPlaylist.get(playIndex);
-                }
-
-                break;
-            case Mode.SHUFFLE:
-                // 随机播放
-
-                playIndex = new Random().nextInt(currentPlaylist.size());
-                if (currentPlaylist.size() > 0) {
-                    return currentPlaylist.get(playIndex);
-                }
-                break;
-            case Mode.REPEAT_ALL:
-                // 循环播放
-
-                playIndex++;
-                if (playIndex >= currentPlaylist.size()) {
-                    playIndex = 0;
-                }
-
-                if (currentPlaylist.size() > 0) {
-                    return currentPlaylist.get(playIndex);
-                }
-
-                break;
-            case Mode.REPEAT_ONCE:
-                // 单曲播放
-                return currentPlaylist.get(playIndex);
-
-        }
-        return null;
-    }
-
-    /**
-     * 获取当前的播放索引
-     *
-     * @return
-     */
-    private int getCurPlayIndex() {
-
-        List<AudioInfo> currentPlaylist = mPrefMgr.getCurrentPlaylist();
-        int index = -1;
-        for (int i = 0; i < currentPlaylist.size(); i++) {
-            AudioInfo audioInfo = currentPlaylist.get(i);
-            if (audioInfo.getHash().equals(mPrefMgr.getCurrentAudioHash())) {
-                return i;
-            }
-        }
-        return index;
-    }
 }

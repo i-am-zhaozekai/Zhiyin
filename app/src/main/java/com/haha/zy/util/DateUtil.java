@@ -4,10 +4,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * 时间处理
- * Created by zhangliangming on 2017/8/4.
- */
 public class DateUtil {
 
     /**

@@ -11,9 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.request.RequestOptions;
 import com.haha.zy.R;
 import com.haha.zy.audio.AudioInfo;
 import com.haha.zy.db.DatabaseHelper;
+import com.haha.zy.net.api.kugou.SingerAvatorURLGetter;
+import com.haha.zy.glide.SingerModel;
 import com.haha.zy.player.EventManager;
 import com.haha.zy.player.PlaybackInfo;
 import com.haha.zy.player.PlayerManager;
@@ -22,6 +26,7 @@ import com.haha.zy.util.ToastUtil;
 import com.haha.zy.widget.ListItemRelativeLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +47,7 @@ public class MainPopPlayListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public static final int OTHER = 4;
     private Context mContext;
     private List<AudioInfo> mDatas;
+    private List<SingerModel> mAvatorModels;
     private int state = NOMOREDATA;
 
     /**
@@ -51,11 +57,26 @@ public class MainPopPlayListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private String playIndexHash = "-1";
     private PreferenceManager mPrefMgr;
 
+    private RequestManager manager;
+    private RequestOptions options;
 
-    public MainPopPlayListAdapter(Context context, List<AudioInfo> datas) {
+
+    public MainPopPlayListAdapter(Context context, List<AudioInfo> datas,
+                                  RequestManager manager, RequestOptions options) {
         mContext = context;
         mPrefMgr = PreferenceManager.getInstance(mContext);
+
+        this.manager = manager;
+        this.options = options;
+
         mDatas = datas;
+
+        mAvatorModels = new ArrayList<>();
+        for (int i=0; i<datas.size(); i++ ){
+            AudioInfo audioInfo = datas.get(i);
+            String singerName = audioInfo.getArtist();
+            mAvatorModels.add(i, new SingerModel(singerName, new SingerAvatorURLGetter()));
+        }
     }
 
     @Override
@@ -199,7 +220,7 @@ public class MainPopPlayListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             //加载歌手图片
             //TODO:
             //ImageUtil.loadSingerImage(mHPApplication, mContext, viewHolder.getSingPicImg(), audioInfo.getSingerName());
-
+            manager.load(mAvatorModels.get(position)).apply(options).into(viewHolder.getSingPicImg());
 
         } else {
             viewHolder.getSongIndexTv().setVisibility(View.VISIBLE);
@@ -251,7 +272,7 @@ public class MainPopPlayListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 //加载歌手图片
                 //TODO:
                 //ImageUtil.loadSingerImage(mHPApplication, mContext, viewHolder.getSingPicImg(), audioInfo.getSingerName());
-
+                manager.load(mAvatorModels.get(position)).apply(options).into(viewHolder.getSingPicImg());
 
                 //
                 if (playIndexPosition != -1) {

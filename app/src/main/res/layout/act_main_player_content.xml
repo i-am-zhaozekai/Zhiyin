@@ -75,7 +75,7 @@
                 android:singleLine="true"
                 android:text="@string/def_songName"
                 android:textColor="@android:color/black"
-                android:textSize="12dp"/>
+                android:textSize="@dimen/text_size_medium"/>
 
             <TextView
                 android:id="@+id/artist_name_tv"
@@ -86,8 +86,8 @@
                 android:ellipsize="marquee"
                 android:singleLine="true"
                 android:text="@string/def_artist"
-                android:textColor="#555555"
-                android:textSize="10dp"/>
+                android:textColor="@color/grey_default"
+                android:textSize="@dimen/text_size_small"/>
 
         </RelativeLayout>
 
@@ -137,7 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"
-                android:src="@drawable/bar_menu" />
+                android:src="@drawable/playlist_menu_dark" />
 
         </RelativeLayout>
 
